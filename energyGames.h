@@ -2,7 +2,10 @@
 #define ENERGY_GAMES_H
 #include "cuddObj.hh"
 
-#include "aiger.h"
+extern "C" {
+  #include "aiger.h"
+}
+
 typedef unsigned lit;
 
 
@@ -20,6 +23,8 @@ class EnergyGame {
 
   // Destructor.
   ~EnergyGame();
+
+  void printCuddVariables();
 
   // Returns a literal used to represent its next valuation
   static unsigned primeVar(lit lit) { return aiger_strip(lit) + 1; }
