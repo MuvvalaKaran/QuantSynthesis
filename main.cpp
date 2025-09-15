@@ -13,7 +13,8 @@ int main(int argc, char ** argv)
 
   string file_name(argv[1]);
   EnergyGame g(file_name);
-  activate_cache();
+  // activate_cache();
+  // g.printCuddVariables();
 
   //ADD sol = g.weight_function();
   cout << "solving ..." << endl;
@@ -24,7 +25,10 @@ int main(int argc, char ** argv)
   double max_value = 15;
 
   for(int i = 0; ! finite_value && i < max_value ; i++) {
+    // g.printCuddVariables();
     ADD sol = g.solve(threshold,max_iteration, -i);
+    g.printCuddVariables();
+
     //g.dump2dot(sol,"solution.dot");
     //cout << "wrote solution.dot" << std::endl;
 

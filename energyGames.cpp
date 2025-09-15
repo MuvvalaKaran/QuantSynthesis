@@ -116,6 +116,66 @@ EnergyGame::EnergyGame(aiger &base, Cudd * local_mgr) {
   initializeOutputs();
 }
 
+void EnergyGame::printCuddVariables() {
+  cout << "--- Initialized CUDD BDD Variables ---" << endl;
+  int num_vars = mgr->ReadSize();
+  cout << "Total variables allocated in CUDD manager: " << num_vars << endl;
+
+  cout << "\n--- Latches ---" << endl;
+  for (unsigned i = 0; i < spec->num_latches; i++) {
+    unsigned lit = spec->latches[i].lit;
+    unsigned var_index = aiger_lit2var(lit);
+    cout << "  Latch " << i
+         << ": lit=" << lit
+         << ", CUDD var_index=" << var_index;
+    if (spec->latches[i].name) {
+      cout << ", name='" << spec->latches[i].name << "'";
+    }
+    cout << endl;
+  }
+
+  cout << "\n--- Inputs ---" << endl;
+  for (unsigned i = 0; i < spec->num_inputs; i++) {
+    unsigned lit = spec->inputs[i].lit;
+    unsigned var_index = aiger_lit2var(lit);
+    cout << "  Input " << i
+         << ": lit=" << lit
+         << ", CUDD var_index=" << var_index;
+    if (spec->inputs[i].name) {
+      cout << ", name='" << spec->inputs[i].name << "'";
+    }
+    cout << endl;
+  }
+
+  cout << "\n--- Outputs ---" << endl;
+  for (unsigned i = 0; i < spec->num_outputs; i++) {
+    unsigned lit = spec->outputs[i].lit;
+    unsigned var_index = aiger_lit2var(lit);
+    cout << "  Output " << i
+         << ": lit=" << lit
+         << ", CUDD var_index=" << var_index;
+    if (spec->outputs[i].name) {
+      cout << ", name='" << spec->outputs[i].name << "'";
+    }
+    cout << endl;
+  }
+
+  if (error_fake_latch != NULL) {
+    cout << "\n--- Special Latches ---" << endl;
+    unsigned lit = error_fake_latch->lit;
+    unsigned var_index = aiger_lit2var(lit);
+    cout << "  Error Latch: lit=" << lit
+         << ", CUDD var_index=" << var_index
+         << ", name='" << error_fake_latch->name << "'" << endl;
+  }
+  cout << "------------------------------------" << endl;
+
+  cout << "--- Final CUDD BDD Variables ---" << endl;
+  int final_num_vars = mgr->ReadSize();
+  cout << "Total variables allocated in CUDD manager: " << final_num_vars << endl;
+}
+
+
 
 EnergyGame::EnergyGame(std::string file_name) {
   aiger * a = aiger_init();
